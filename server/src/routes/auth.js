@@ -46,7 +46,8 @@ router.post('/invite/accept', async (req, res, next) => {
       return res.status(400).json({ error: 'userId and password are required' });
     }
 
-    await query('UPDATE users SET password_hash = ? WHERE id = ?', [password, userId]);
+    const passwordHash = await bcrypt.hash(password, 10);
+    await query('UPDATE users SET password_hash = ? WHERE id = ?', [passwordHash, userId]);
     res.json({ ok: true });
   } catch (err) {
     next(err);
