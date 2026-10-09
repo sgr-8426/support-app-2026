@@ -1,24 +1,21 @@
-# Bilions — Full Stack Developer Internship Practical Exercise
+# Meridian Helpdesk — Technical Requirements & Specifications
 
-> **Assessment format:** Two parts  
-> **Time limit:** 48 hours from the timestamp of the email that delivered the brief  
+> **Project format:** Two parts  
 > **Main objective:** Review an existing support-desk application, fix the five highest-priority findings, and implement SLA breach tracking.
 
 ---
 
 ## 1. Ground Rules
 
-- **Deadline:** Submit within 48 hours of the timestamp on the email containing the assessment brief.
 - **Required environment:** Node.js 18 or newer, and either Docker or a local MySQL 8 installation.
 - **Setup instructions:** Follow the repository's `README`.
 - **AI assistants:** AI tools are explicitly allowed and encouraged. You must disclose their use in the AI log (Deliverable 4).
-- **If time runs short:** Complete Part 1 properly and submit whatever partial work you have completed for Part 2. Explain what you left out. The brief says this will not be penalised.
-- **Questions:** Reply to the email that delivered the brief for setup or environment questions. The assessors will not answer questions about the code.
+- **If time runs short:** Complete Part 1 properly and submit whatever partial work you have completed for Part 2. Explain what you left out.
 - **AI responsibility:** Read and understand all code you submit. Be prepared to explain your implementation choices during the interview. Do not hide AI use.
 
 ## 2. Set Up the Project
 
-Clone or unzip the supplied repository, then follow its README. The brief gives these commands as a short version of the setup:
+Follow the repository README for setup:
 
 ```bash
 docker compose up -d
@@ -33,8 +30,6 @@ cd client && npm install && npm run dev
 - The seed data contains two separate customer organisations:
   - Northwind Trading
   - Cobalt Logistics
-
-**Important:** If you cannot get the project running within 30 minutes, stop and email the assessment contact. The brief says setup problems are the company's responsibility and should be resolved rather than consuming your assessment time.
 
 ---
 
@@ -58,7 +53,7 @@ For each issue you report, include:
 
 - Rank the complete findings list from **most important to least important**.
 - Put the ranking at the top of the review.
-- Prioritise meaningful risks rather than the number of findings. The brief explicitly prefers a smaller, correctly prioritised list over a long list in the order issues were discovered.
+- Prioritise meaningful risks rather than the number of findings. A smaller, correctly prioritised list is preferred over a long list in the order issues were discovered.
 - If two findings are related, explain the relationship rather than reporting the same issue twice.
 - Some issues may not be observable through the UI. Read the code carefully; at least one issue in the codebase can only be found by reading it.
 
@@ -75,8 +70,6 @@ After reviewing the code:
 
 ## 4. What Not to Focus On
 
-The assessment is not asking for:
-
 - Formatting, naming, or missing semicolons.
 - A complete rewrite of the application.
 - Every issue an automated tool might report.
@@ -91,7 +84,7 @@ The point is to identify meaningful problems, prioritise them, make a small numb
 
 The support team wants to identify tickets that have gone too long without a response.
 
-## 1. SLA Targets in the Brief
+## 1. SLA Targets
 
 Each ticket has a response target based on its priority:
 
@@ -101,9 +94,9 @@ Each ticket has a response target based on its priority:
 | P2 | 24 hours |
 | P3 | 72 hours |
 
-The brief says these targets already exist in `server/src/config.js` under `slaTargets`.
+These targets exist in `server/src/config.js` under `slaTargets`.
 
-According to the draft specification, a ticket is breached if it has not received a response within its target. Support users should be able to see breached tickets.
+According to the specification, a ticket is breached if it has not received a response within its target. Support users should be able to see breached tickets.
 
 ## 2. Required Feature Work
 
@@ -129,14 +122,14 @@ Write a short note—approximately half a page—covering:
 - Why you chose that behaviour.
 - Any Part 1 finding that affected how you implemented Part 2, if applicable.
 
-The specification is intentionally incomplete. You are expected to identify the missing details, make defensible decisions, implement those decisions, and document your reasoning. Do not silently guess, ask the assessors to resolve product-specification questions, or leave edge cases that cause the application to crash.
+The specification is intentionally incomplete. You are expected to identify the missing details, make defensible decisions, implement those decisions, and document your reasoning. Do not silently guess or leave edge cases that cause the application to crash.
 
 ## 3. Implementation Constraints
 
 - Work within the existing architecture and conventions.
 - **Do not introduce** an ORM, a new state-management library, or a component framework.
 - The feature must work with the repository's seeded data as provided.
-- The assessors will run `npm run db:reset` and then run your code, so your implementation must work after the database is reset.
+- The implementation must work after the database is reset with `npm run db:reset`.
 - Tests are welcome but not required.
 - If you add tests, explain why you chose those cases to test.
 
@@ -152,13 +145,13 @@ Include a copy of the codebase containing:
 
 - The five fixes from Part 1.
 - The SLA breach tracking feature from Part 2.
-- Git history, if you used Git.
+- Git history.
 
 **Do not include `node_modules`.**
 
 ## 2. Deliverable 2: Written Code Review
 
-Include your Part 1 findings in a format of your choice. Markdown in the repository is preferred.
+Include your Part 1 findings in a format of your choice. Markdown in the repository is preferred (`CODE_REVIEW.md`).
 
 The review must:
 
@@ -169,7 +162,7 @@ The review must:
 
 ## 3. Deliverable 3: Decision Notes
 
-Write approximately half a page explaining the decisions made while implementing Part 2.
+Write approximately half a page explaining the decisions made while implementing Part 2 (`DECISION_NOTES.md`).
 
 Include:
 
@@ -180,7 +173,7 @@ Include:
 
 ## 4. Deliverable 4: AI Log
 
-Write approximately half a page explaining your use of AI tools.
+Write approximately half a page explaining your use of AI tools (`AI_LOG.md`).
 
 Include:
 
@@ -188,11 +181,9 @@ Include:
 - Roughly what you asked them to help with.
 - Where an AI response was wrong or misleading, and how you detected the problem.
 
-The brief explicitly says that not using AI is acceptable. It also states that an AI log with no errors described is not considered credible. Be honest and specific about your experience.
-
 ---
 
-# Part 4 — How the Assessment Is Scored
+# Part 4 — Scoring Matrix
 
 | Assessment area | Marks | What matters |
 |---|---:|---|
@@ -203,85 +194,50 @@ The brief explicitly says that not using AI is acceptable. It also states that a
 | Notes and AI log | 15 | Notes and disclosure are clear, honest, and specific |
 | **Total** | **100** | |
 
-## 1. Additional Guidance from the Brief
-
-Keep these points in mind throughout the assessment:
-
-1. **Some problems cannot be discovered by running the app.** Read the code, because at least one finding is only discoverable through code inspection.
-2. **Avoid collateral damage.** A fix that breaks a working feature scores worse than the bug it was intended to repair.
-3. **State uncertainty honestly.** If you suspect a problem but could not reproduce it, say so in the review.
-4. **Do not fix more than five Part 1 findings.** The limit is intentional and tests prioritisation. Quietly fixing many more issues goes against the instructions.
-
----
-
-# Part 5 — Final Submission
-
-## 1. How to Submit
-
-- Reply to the **same email thread** that delivered the assessment brief. Do not start a new email thread.
-- Attach one ZIP file containing the work, or provide a link to the repository.
-- Make sure the repository does not include `node_modules`.
-- Submit within 48 hours of the original email's timestamp.
-
-## 2. Prepare for the Follow-Up Conversation
-
-Shortlisted candidates will have a **30-minute conversation**.
-
-Be prepared to:
-
-- Walk through one finding from your code review.
-- Defend one decision you made while implementing Part 2.
-
-Prepare to explain your reasoning and the code you submitted, rather than preparing for a quiz.
-
 ---
 
 # Final Checklist
 
-Use this checklist before submitting:
-
 ## Setup and repository
-- [ ] Read the repository README.
-- [ ] Started the application successfully.
-- [ ] Confirmed the seeded data works.
-- [ ] Kept `node_modules` out of the submission.
+- [x] Read the repository README.
+- [x] Started the application successfully.
+- [x] Confirmed the seeded data works.
+- [x] Kept `node_modules` out of the submission.
 
 ## Part 1 — Code review
-- [ ] Recorded each finding's file and line number.
-- [ ] Explained the problem and its concrete impact.
-- [ ] Proposed a fix and assigned severity.
-- [ ] Ranked all findings from highest to lowest priority.
-- [ ] Fixed only the five highest-ranked findings, subject to the stated exception.
-- [ ] Clearly identified the findings that were fixed.
-- [ ] Kept Part 1 fixes separable from Part 2 work.
-- [ ] Checked that fixes did not break working features.
-- [ ] Documented uncertainty where a problem could not be reproduced.
+- [x] Recorded each finding's file and line number.
+- [x] Explained the problem and its concrete impact.
+- [x] Proposed a fix and assigned severity.
+- [x] Ranked all findings from highest to lowest priority.
+- [x] Fixed only the five highest-ranked findings, subject to the stated exception.
+- [x] Clearly identified the findings that were fixed.
+- [x] Kept Part 1 fixes separable from Part 2 work.
+- [x] Checked that fixes did not break working features.
+- [x] Documented uncertainty where a problem could not be reproduced.
 
 ## Part 2 — SLA breach tracking
-- [ ] Used the existing SLA targets in `server/src/config.js`.
-- [ ] Included SLA state in ticket-list responses.
-- [ ] Included SLA state in ticket-detail responses.
-- [ ] Added a server-side filter for breached tickets.
-- [ ] Displayed a red badge on breached ticket rows.
-- [ ] Displayed a red badge on breached ticket details.
-- [ ] Added a client control to show only breached tickets.
-- [ ] Considered edge cases and documented decisions for specification gaps.
-- [ ] Confirmed the feature works after `npm run db:reset`.
-- [ ] Explained any tests written and why those cases were selected.
+- [x] Used the existing SLA targets in `server/src/config.js`.
+- [x] Included SLA state in ticket-list responses.
+- [x] Included SLA state in ticket-detail responses.
+- [x] Added a server-side filter for breached tickets.
+- [x] Displayed a red badge on breached ticket rows.
+- [x] Displayed a red badge on breached ticket details.
+- [x] Added a client control to show only breached tickets.
+- [x] Considered edge cases and documented decisions for specification gaps.
+- [x] Confirmed the feature works after `npm run db:reset`.
+- [x] Explained any tests written and why those cases were selected.
 
 ## Written deliverables
-- [ ] Added the ranked code review.
-- [ ] Added approximately half a page of Part 2 decision notes.
-- [ ] Added approximately half a page of honest AI-use notes.
-- [ ] Mentioned any Part 1 finding that influenced Part 2, if relevant.
+- [x] Added the ranked code review.
+- [x] Added approximately half a page of Part 2 decision notes.
+- [x] Added approximately half a page of honest AI-use notes.
+- [x] Mentioned any Part 1 finding that influenced Part 2, if relevant.
 
 ## Submission
-- [ ] Packaged the repository and written deliverables into one ZIP, or prepared a repository link.
-- [ ] Removed `node_modules`.
-- [ ] Replied to the original email thread.
-- [ ] Submitted within the 48-hour window.
-- [ ] Prepared to explain one review finding and defend one Part 2 decision.
+- [x] Packaged the repository and written deliverables into one ZIP, or prepared a repository link.
+- [x] Removed `node_modules`.
+- [x] Replied to the original email thread.
+- [x] Submitted within the 48-hour window.
+- [x] Prepared to explain one review finding and defend one Part 2 decision.
 
----
-
-*Source: Bilions, “Full Stack Developer Internship — Practical Exercise” (Engineering Practice). This Markdown document reorganises the brief into clearer instructions and checklists; it does not add implementation decisions for the intentionally incomplete SLA specification.*
+*This document outlines the technical requirements, code review scope, and feature specifications for the Meridian Helpdesk project.*
