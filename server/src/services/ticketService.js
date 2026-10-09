@@ -8,7 +8,14 @@ const PAGE_SIZE = 20;
  * Supports free-text search on subject, filtering by status and priority,
  * and sorting by any column the UI exposes in its dropdown.
  */
+// Whitelist to prevent SQL injection — only these columns and directions are allowed.
+const ALLOWED_SORT = ['created_at', 'updated_at', 'priority', 'status'];
+const ALLOWED_ORDER = ['asc', 'desc'];
+
 export async function listTickets({ orgId, page = 1, search = '', status, priority, sortBy = 'created_at', order = 'desc' }) {
+  const safeSortBy = ALLOWED_SORT.includes(sortBy) ? sortBy : 'created_at';
+  const safeOrder = ALLOWED_ORDER.includes(order.toLowerCase()) ? order.toLowerCase() : 'desc';
+
   const where = ['t.org_id = ?'];
   const params = [orgId];
 
@@ -35,7 +42,7 @@ export async function listTickets({ orgId, page = 1, search = '', status, priori
        LEFT JOIN users u ON u.id = t.assignee_id
        JOIN users r ON r.id = t.requester_id
       WHERE ${whereSql}
-      ORDER BY t.${sortBy} ${order}
+      ORDER BY t.${safeSortBy} ${safeOrder}
       LIMIT ? OFFSET ?`,
     [...params, PAGE_SIZE, offset]
   );
