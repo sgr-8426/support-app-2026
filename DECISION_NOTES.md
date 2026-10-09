@@ -103,3 +103,22 @@ This document details the ambiguities identified in the brief, the architectural
 
 3. **Finding 4 (Tenant Isolation / Org-Scoping):**  
    The SQL breach calculation condition was designed to nest cleanly inside the existing `where.push('t.org_id = ?')` clause, ensuring cross-tenant boundaries are strictly maintained when filtering or viewing breached tickets.
+
+---
+
+## 4. Test Suite and Rationale for Selected Cases
+
+To verify correctness and prevent regressions without introducing external testing dependencies (adhering to the zero-dependency constraint), we added an automated test script (`server/scripts/test-sla.js`, executable via `npm test` in `/server`):
+
+1. **SLA Configuration Binding (`config.slaTargets`):**  
+   *Why tested:* Ensures that SLA deadlines are dynamically driven by `server/src/config.js` (`P1: 4`, `P2: 24`, `P3: 72`) rather than hardcoded magic numbers.
+2. **SQL Injection Resilience (Part 1 Regression):**  
+   *Why tested:* Passes a SQL injection payload into `listTickets({ sortBy: 'id; DROP TABLE dummy --' })` to verify that our Part 1 whitelist falls back safely to `created_at` without executing arbitrary SQL.
+3. **API Schema Contract (`is_breached: boolean` on all rows):**  
+   *Why tested:* Asserts that every single ticket returned by the list endpoint carries a strictly typed boolean `is_breached` property.
+4. **Breached Filter Integrity (`?breached=true`):**  
+   *Why tested:* Validates that `breached=true` returns only breached tickets, that every returned row has `status IN ('open', 'pending')`, and that pagination totals reflect the filtered subset accurately.
+5. **Ticket Detail Parity (`getTicketById`):**  
+   *Why tested:* Confirms that the detail endpoint carries the exact same SLA evaluation as the list endpoint.
+6. **Agent Response Edge Case (Ticket #9):**  
+   *Why tested:* Ticket #9 in the seeded database has a public comment from an agent. This test confirms that our subquery recognizes qualifying responses and marks the ticket as not breached, validating that requesters and internal notes do not introduce false positives.
